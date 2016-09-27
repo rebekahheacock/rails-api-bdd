@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ArticlesController do
+  # set up methods so we can run our tests
   def article_params
     {
       title: 'One Weird Trick',
@@ -12,19 +13,28 @@ RSpec.describe ArticlesController do
     Article.first
   end
 
+  # create an article for testing
   before(:all) do
     Article.create!(article_params)
   end
 
+  # delete everything after testing
   after(:all) do
     Article.delete_all
   end
+  # end methods to help us run our tests
 
   describe 'GET index' do
-    skip 'is succesful' do
+    # before each one of these tests, do something first
+    before(:each) { get :index }
+    it 'is successful' do
+      expect(response.status).to eq(200)
     end
 
-    skip 'renders a JSON response' do
+    it 'renders a JSON response' do
+      articles_collection = JSON.parse(response.body)
+      expect(articles_collection).not_to be_nil
+      expect(articles_collection.first['title']).to eq(article.title)
     end
   end
 
