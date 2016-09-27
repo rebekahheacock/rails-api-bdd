@@ -48,6 +48,16 @@ RSpec.describe ArticlesController do
       article_response = JSON.parse(response.body)
       expect(article_response['id']).not_to be_nil
       expect(article_response['title']).to eq(article[:title])
+      # puts 'article response is '
+      # puts article_response
+    end
+
+    # checks to make sure we have a hash (single article),
+    # not an array (multiple articles)
+    # this is extra/not strictly necessary
+    it 'renders a hash' do
+      article_response = JSON.parse(response.body)
+      expect(article_response).to a_kind_of(Hash)
     end
   end
 
