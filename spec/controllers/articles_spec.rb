@@ -66,10 +66,17 @@ RSpec.describe ArticlesController do
       post :create, article: article_params, format: :json
     end
 
-    skip 'is successful' do
+    it 'is successful' do
+      # 201 is "Created"
+      # 200 is "OK"
+      expect(response.status).to eq(201)
     end
 
-    skip 'renders a JSON response' do
+    it 'renders a JSON response' do
+      article_response = JSON.parse(response.body)
+      # why article_response and not article_response['id'] here?
+      expect(article_response).not_to be_nil
+      expect(article_response['title']).to eq(article_params[:title])
     end
   end
 
