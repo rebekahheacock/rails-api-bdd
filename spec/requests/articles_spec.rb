@@ -40,6 +40,7 @@ RSpec.describe 'Articles API' do
 
   describe 'GET /articles/:id' do
     it 'shows one article' do
+      # double quotes for string interpolation
       get "/articles/#{article.id}"
 
       expect(response).to be_success
@@ -67,7 +68,18 @@ RSpec.describe 'Articles API' do
       { title: 'Two Stupid Tricks' }
     end
 
-    skip 'updates an article' do
+    it 'updates an article' do
+      # double quotes for string interpolation
+      patch "/articles/#{article.id}", article: article_diff, format: :json
+
+      # note that this differs from previous update methods we've written
+      # which don't return any content
+      # this test requires content to be returned
+      # or else it will fail (as written)
+      expect(response).to be_success
+      article_response = JSON.parse(response.body)
+      expect(article_response['id']).to eq(article[:id])
+      expect(article_response['title']).to eq(article_diff[:title])
     end
   end
 
